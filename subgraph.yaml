@@ -1,0 +1,26 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Main
+    network: mumbai
+    source:
+      address: "0x6D34c93652a7C9C1603e20b7f5900B98BCC186B6"
+      abi: Main
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - OwnershipTransferred
+        - UserDeployed
+      abis:
+        - name: Main
+          file: ./abis/Main.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: UserDeployed(address,string,string)
+          handler: handleUserDeployed
+      file: ./src/mapping.ts
