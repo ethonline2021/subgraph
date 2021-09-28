@@ -34,12 +34,11 @@ templates:
       language: wasm/assemblyscript
       entities:
         - User
+        - Item
       abis:
         - name: User
           file: ./abis/User.json
       eventHandlers:
-        - event: UserCreated(address,address,string,string)
-          handler: handleUserCreated
         - event: UserUpdated(address,string,string)
           handler: handleUserUpdated
         - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string)
@@ -60,8 +59,6 @@ templates:
         - name: Item
           file: ./abis/Item.json
       eventHandlers:
-        - event: ItemCreated(address,address,string,string,uint256,address,uint256,uint256,string)
-          handler: handleItemCreated
         - event: ItemUpdated(address,address,string,string,uint256,address,uint256,string)
           handler: handleItemUpdated
       file: ./src/mapping.ts
