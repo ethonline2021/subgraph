@@ -62,9 +62,145 @@ export class UserDeployed__Params {
   }
 }
 
+export class Main__superfluidConfigResult {
+  value0: Address;
+  value1: Address;
+  value2: Address;
+  value3: string;
+
+  constructor(
+    value0: Address,
+    value1: Address,
+    value2: Address,
+    value3: string
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddress(this.value0));
+    map.set("value1", ethereum.Value.fromAddress(this.value1));
+    map.set("value2", ethereum.Value.fromAddress(this.value2));
+    map.set("value3", ethereum.Value.fromString(this.value3));
+    return map;
+  }
+}
+
 export class Main extends ethereum.SmartContract {
   static bind(address: Address): Main {
     return new Main("Main", address);
+  }
+
+  createSuperToken(_token: Address): Address {
+    let result = super.call(
+      "createSuperToken",
+      "createSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_createSuperToken(_token: Address): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "createSuperToken",
+      "createSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  deployItem(
+    owner: Address,
+    title: string,
+    description: string,
+    price: BigInt,
+    token: Address,
+    amount: BigInt,
+    endPaymentDate: BigInt,
+    uri: string
+  ): Address {
+    let result = super.call(
+      "deployItem",
+      "deployItem(address,string,string,uint256,address,uint256,uint256,string):(address)",
+      [
+        ethereum.Value.fromAddress(owner),
+        ethereum.Value.fromString(title),
+        ethereum.Value.fromString(description),
+        ethereum.Value.fromUnsignedBigInt(price),
+        ethereum.Value.fromAddress(token),
+        ethereum.Value.fromUnsignedBigInt(amount),
+        ethereum.Value.fromUnsignedBigInt(endPaymentDate),
+        ethereum.Value.fromString(uri)
+      ]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_deployItem(
+    owner: Address,
+    title: string,
+    description: string,
+    price: BigInt,
+    token: Address,
+    amount: BigInt,
+    endPaymentDate: BigInt,
+    uri: string
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "deployItem",
+      "deployItem(address,string,string,uint256,address,uint256,uint256,string):(address)",
+      [
+        ethereum.Value.fromAddress(owner),
+        ethereum.Value.fromString(title),
+        ethereum.Value.fromString(description),
+        ethereum.Value.fromUnsignedBigInt(price),
+        ethereum.Value.fromAddress(token),
+        ethereum.Value.fromUnsignedBigInt(amount),
+        ethereum.Value.fromUnsignedBigInt(endPaymentDate),
+        ethereum.Value.fromString(uri)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  deployUser(name: string, description: string): Address {
+    let result = super.call(
+      "deployUser",
+      "deployUser(string,string):(address)",
+      [ethereum.Value.fromString(name), ethereum.Value.fromString(description)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_deployUser(
+    name: string,
+    description: string
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "deployUser",
+      "deployUser(string,string):(address)",
+      [ethereum.Value.fromString(name), ethereum.Value.fromString(description)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   deployedUsers(param0: Address): Address {
@@ -113,6 +249,48 @@ export class Main extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  getSuperToken(_token: Address): Address {
+    let result = super.call(
+      "getSuperToken",
+      "getSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getSuperToken(_token: Address): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getSuperToken",
+      "getSuperToken(address):(address)",
+      [ethereum.Value.fromAddress(_token)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  isSuperToken(_token: Address): boolean {
+    let result = super.call("isSuperToken", "isSuperToken(address):(bool)", [
+      ethereum.Value.fromAddress(_token)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_isSuperToken(_token: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall("isSuperToken", "isSuperToken(address):(bool)", [
+      ethereum.Value.fromAddress(_token)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   owner(): Address {
     let result = super.call("owner", "owner():(address)", []);
 
@@ -126,6 +304,206 @@ export class Main extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  superTokenRegistry(param0: Address): Address {
+    let result = super.call(
+      "superTokenRegistry",
+      "superTokenRegistry(address):(address)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_superTokenRegistry(param0: Address): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "superTokenRegistry",
+      "superTokenRegistry(address):(address)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  superfluidConfig(): Main__superfluidConfigResult {
+    let result = super.call(
+      "superfluidConfig",
+      "superfluidConfig():(address,address,address,string)",
+      []
+    );
+
+    return new Main__superfluidConfigResult(
+      result[0].toAddress(),
+      result[1].toAddress(),
+      result[2].toAddress(),
+      result[3].toString()
+    );
+  }
+
+  try_superfluidConfig(): ethereum.CallResult<Main__superfluidConfigResult> {
+    let result = super.tryCall(
+      "superfluidConfig",
+      "superfluidConfig():(address,address,address,string)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new Main__superfluidConfigResult(
+        value[0].toAddress(),
+        value[1].toAddress(),
+        value[2].toAddress(),
+        value[3].toString()
+      )
+    );
+  }
+}
+
+export class ConstructorCall extends ethereum.Call {
+  get inputs(): ConstructorCall__Inputs {
+    return new ConstructorCall__Inputs(this);
+  }
+
+  get outputs(): ConstructorCall__Outputs {
+    return new ConstructorCall__Outputs(this);
+  }
+}
+
+export class ConstructorCall__Inputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+
+  get itemFactory(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get sfHost(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get sfCfa(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get sfResolver(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
+
+  get sfVersion(): string {
+    return this._call.inputValues[4].value.toString();
+  }
+}
+
+export class ConstructorCall__Outputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+}
+
+export class CreateSuperTokenCall extends ethereum.Call {
+  get inputs(): CreateSuperTokenCall__Inputs {
+    return new CreateSuperTokenCall__Inputs(this);
+  }
+
+  get outputs(): CreateSuperTokenCall__Outputs {
+    return new CreateSuperTokenCall__Outputs(this);
+  }
+}
+
+export class CreateSuperTokenCall__Inputs {
+  _call: CreateSuperTokenCall;
+
+  constructor(call: CreateSuperTokenCall) {
+    this._call = call;
+  }
+
+  get _token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class CreateSuperTokenCall__Outputs {
+  _call: CreateSuperTokenCall;
+
+  constructor(call: CreateSuperTokenCall) {
+    this._call = call;
+  }
+
+  get superToken(): Address {
+    return this._call.outputValues[0].value.toAddress();
+  }
+}
+
+export class DeployItemCall extends ethereum.Call {
+  get inputs(): DeployItemCall__Inputs {
+    return new DeployItemCall__Inputs(this);
+  }
+
+  get outputs(): DeployItemCall__Outputs {
+    return new DeployItemCall__Outputs(this);
+  }
+}
+
+export class DeployItemCall__Inputs {
+  _call: DeployItemCall;
+
+  constructor(call: DeployItemCall) {
+    this._call = call;
+  }
+
+  get owner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get title(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get description(): string {
+    return this._call.inputValues[2].value.toString();
+  }
+
+  get price(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+
+  get token(): Address {
+    return this._call.inputValues[4].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
+  }
+
+  get endPaymentDate(): BigInt {
+    return this._call.inputValues[6].value.toBigInt();
+  }
+
+  get uri(): string {
+    return this._call.inputValues[7].value.toString();
+  }
+}
+
+export class DeployItemCall__Outputs {
+  _call: DeployItemCall;
+
+  constructor(call: DeployItemCall) {
+    this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.outputValues[0].value.toAddress();
   }
 }
 
@@ -160,6 +538,10 @@ export class DeployUserCall__Outputs {
 
   constructor(call: DeployUserCall) {
     this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.outputValues[0].value.toAddress();
   }
 }
 

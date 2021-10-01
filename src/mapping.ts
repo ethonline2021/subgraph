@@ -39,6 +39,7 @@ export function handleItemDeployed(event: ItemDeployed): void {
     entity = new Item(event.params.itemAddress.toHex());
   }
 
+  entity.user = User.load(event.address.toHex()).id;
   entity.address = event.params.itemAddress;
   entity.owner = event.params.owner;
   entity.title = event.params.title;
@@ -64,9 +65,5 @@ export function handleItemUpdated(event: ItemUpdated): void {
   entity.address = event.params.item;
   entity.title = event.params.title;
   entity.description = event.params.description;
-  entity.price = event.params.price;
-  entity.token = event.params.token;
-  entity.endPaymentDate = event.params.endPaymentDate;
-  entity.uri = event.params.uri;
   entity.save();
 }

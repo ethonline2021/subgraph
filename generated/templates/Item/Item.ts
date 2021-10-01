@@ -36,6 +36,70 @@ export class ApprovalForAll__Params {
   }
 }
 
+export class DoneStuff extends ethereum.Event {
+  get params(): DoneStuff__Params {
+    return new DoneStuff__Params(this);
+  }
+}
+
+export class DoneStuff__Params {
+  _event: DoneStuff;
+
+  constructor(event: DoneStuff) {
+    this._event = event;
+  }
+
+  get operator(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get from(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get to(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get userData(): Bytes {
+    return this._event.parameters[4].value.toBytes();
+  }
+
+  get operatorData(): Bytes {
+    return this._event.parameters[5].value.toBytes();
+  }
+}
+
+export class ItemBought extends ethereum.Event {
+  get params(): ItemBought__Params {
+    return new ItemBought__Params(this);
+  }
+}
+
+export class ItemBought__Params {
+  _event: ItemBought;
+
+  constructor(event: ItemBought) {
+    this._event = event;
+  }
+
+  get item(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get buyer(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
 export class ItemCreated extends ethereum.Event {
   get params(): ItemCreated__Params {
     return new ItemCreated__Params(this);
@@ -113,22 +177,6 @@ export class ItemUpdated__Params {
 
   get description(): string {
     return this._event.parameters[3].value.toString();
-  }
-
-  get price(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-
-  get token(): Address {
-    return this._event.parameters[5].value.toAddress();
-  }
-
-  get endPaymentDate(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
-  }
-
-  get uri(): string {
-    return this._event.parameters[7].value.toString();
   }
 }
 
@@ -438,6 +486,159 @@ export class Item extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
+  afterAgreementCreated(
+    param0: Address,
+    agreementClass: Address,
+    agreementId: Bytes,
+    param3: Bytes,
+    cbdata: Bytes,
+    ctx: Bytes
+  ): Bytes {
+    let result = super.call(
+      "afterAgreementCreated",
+      "afterAgreementCreated(address,address,bytes32,bytes,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(agreementClass),
+        ethereum.Value.fromFixedBytes(agreementId),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(cbdata),
+        ethereum.Value.fromBytes(ctx)
+      ]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_afterAgreementCreated(
+    param0: Address,
+    agreementClass: Address,
+    agreementId: Bytes,
+    param3: Bytes,
+    cbdata: Bytes,
+    ctx: Bytes
+  ): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "afterAgreementCreated",
+      "afterAgreementCreated(address,address,bytes32,bytes,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(agreementClass),
+        ethereum.Value.fromFixedBytes(agreementId),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(cbdata),
+        ethereum.Value.fromBytes(ctx)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  afterAgreementTerminated(
+    param0: Address,
+    param1: Address,
+    agreementId: Bytes,
+    param3: Bytes,
+    cbdata: Bytes,
+    ctx: Bytes
+  ): Bytes {
+    let result = super.call(
+      "afterAgreementTerminated",
+      "afterAgreementTerminated(address,address,bytes32,bytes,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromFixedBytes(agreementId),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(cbdata),
+        ethereum.Value.fromBytes(ctx)
+      ]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_afterAgreementTerminated(
+    param0: Address,
+    param1: Address,
+    agreementId: Bytes,
+    param3: Bytes,
+    cbdata: Bytes,
+    ctx: Bytes
+  ): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "afterAgreementTerminated",
+      "afterAgreementTerminated(address,address,bytes32,bytes,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromFixedBytes(agreementId),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(cbdata),
+        ethereum.Value.fromBytes(ctx)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  afterAgreementUpdated(
+    param0: Address,
+    param1: Address,
+    param2: Bytes,
+    param3: Bytes,
+    param4: Bytes,
+    param5: Bytes
+  ): Bytes {
+    let result = super.call(
+      "afterAgreementUpdated",
+      "afterAgreementUpdated(address,address,bytes32,bytes,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(param4),
+        ethereum.Value.fromBytes(param5)
+      ]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_afterAgreementUpdated(
+    param0: Address,
+    param1: Address,
+    param2: Bytes,
+    param3: Bytes,
+    param4: Bytes,
+    param5: Bytes
+  ): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "afterAgreementUpdated",
+      "afterAgreementUpdated(address,address,bytes32,bytes,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(param4),
+        ethereum.Value.fromBytes(param5)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   balanceOf(account: Address, id: BigInt): BigInt {
     let result = super.call(
       "balanceOf",
@@ -497,6 +698,147 @@ export class Item extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigIntArray());
+  }
+
+  beforeAgreementCreated(
+    superToken: Address,
+    agreementClass: Address,
+    param2: Bytes,
+    param3: Bytes,
+    ctx: Bytes
+  ): Bytes {
+    let result = super.call(
+      "beforeAgreementCreated",
+      "beforeAgreementCreated(address,address,bytes32,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(superToken),
+        ethereum.Value.fromAddress(agreementClass),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(ctx)
+      ]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_beforeAgreementCreated(
+    superToken: Address,
+    agreementClass: Address,
+    param2: Bytes,
+    param3: Bytes,
+    ctx: Bytes
+  ): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "beforeAgreementCreated",
+      "beforeAgreementCreated(address,address,bytes32,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(superToken),
+        ethereum.Value.fromAddress(agreementClass),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(ctx)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  beforeAgreementTerminated(
+    superToken: Address,
+    agreementClass: Address,
+    param2: Bytes,
+    param3: Bytes,
+    param4: Bytes
+  ): Bytes {
+    let result = super.call(
+      "beforeAgreementTerminated",
+      "beforeAgreementTerminated(address,address,bytes32,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(superToken),
+        ethereum.Value.fromAddress(agreementClass),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(param4)
+      ]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_beforeAgreementTerminated(
+    superToken: Address,
+    agreementClass: Address,
+    param2: Bytes,
+    param3: Bytes,
+    param4: Bytes
+  ): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "beforeAgreementTerminated",
+      "beforeAgreementTerminated(address,address,bytes32,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(superToken),
+        ethereum.Value.fromAddress(agreementClass),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(param4)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  beforeAgreementUpdated(
+    param0: Address,
+    param1: Address,
+    param2: Bytes,
+    param3: Bytes,
+    param4: Bytes
+  ): Bytes {
+    let result = super.call(
+      "beforeAgreementUpdated",
+      "beforeAgreementUpdated(address,address,bytes32,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(param4)
+      ]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_beforeAgreementUpdated(
+    param0: Address,
+    param1: Address,
+    param2: Bytes,
+    param3: Bytes,
+    param4: Bytes
+  ): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "beforeAgreementUpdated",
+      "beforeAgreementUpdated(address,address,bytes32,bytes,bytes):(bytes)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromAddress(param1),
+        ethereum.Value.fromFixedBytes(param2),
+        ethereum.Value.fromBytes(param3),
+        ethereum.Value.fromBytes(param4)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   getDetails(): Item__getDetailsResult {
@@ -837,36 +1179,40 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get owner(): Address {
+  get main(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get title(): string {
-    return this._call.inputValues[1].value.toString();
+  get owner(): Address {
+    return this._call.inputValues[1].value.toAddress();
   }
 
-  get description(): string {
+  get title(): string {
     return this._call.inputValues[2].value.toString();
   }
 
+  get description(): string {
+    return this._call.inputValues[3].value.toString();
+  }
+
   get price(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 
   get token(): Address {
-    return this._call.inputValues[4].value.toAddress();
+    return this._call.inputValues[5].value.toAddress();
   }
 
   get amount(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-
-  get endPaymentDate(): BigInt {
     return this._call.inputValues[6].value.toBigInt();
   }
 
+  get endPaymentDate(): BigInt {
+    return this._call.inputValues[7].value.toBigInt();
+  }
+
   get uri(): string {
-    return this._call.inputValues[7].value.toString();
+    return this._call.inputValues[8].value.toString();
   }
 }
 
@@ -875,6 +1221,168 @@ export class ConstructorCall__Outputs {
 
   constructor(call: ConstructorCall) {
     this._call = call;
+  }
+}
+
+export class AfterAgreementCreatedCall extends ethereum.Call {
+  get inputs(): AfterAgreementCreatedCall__Inputs {
+    return new AfterAgreementCreatedCall__Inputs(this);
+  }
+
+  get outputs(): AfterAgreementCreatedCall__Outputs {
+    return new AfterAgreementCreatedCall__Outputs(this);
+  }
+}
+
+export class AfterAgreementCreatedCall__Inputs {
+  _call: AfterAgreementCreatedCall;
+
+  constructor(call: AfterAgreementCreatedCall) {
+    this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get agreementClass(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get agreementId(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+
+  get value3(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+
+  get cbdata(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+
+  get ctx(): Bytes {
+    return this._call.inputValues[5].value.toBytes();
+  }
+}
+
+export class AfterAgreementCreatedCall__Outputs {
+  _call: AfterAgreementCreatedCall;
+
+  constructor(call: AfterAgreementCreatedCall) {
+    this._call = call;
+  }
+
+  get newCtx(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
+  }
+}
+
+export class AfterAgreementTerminatedCall extends ethereum.Call {
+  get inputs(): AfterAgreementTerminatedCall__Inputs {
+    return new AfterAgreementTerminatedCall__Inputs(this);
+  }
+
+  get outputs(): AfterAgreementTerminatedCall__Outputs {
+    return new AfterAgreementTerminatedCall__Outputs(this);
+  }
+}
+
+export class AfterAgreementTerminatedCall__Inputs {
+  _call: AfterAgreementTerminatedCall;
+
+  constructor(call: AfterAgreementTerminatedCall) {
+    this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get value1(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get agreementId(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+
+  get value3(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+
+  get cbdata(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+
+  get ctx(): Bytes {
+    return this._call.inputValues[5].value.toBytes();
+  }
+}
+
+export class AfterAgreementTerminatedCall__Outputs {
+  _call: AfterAgreementTerminatedCall;
+
+  constructor(call: AfterAgreementTerminatedCall) {
+    this._call = call;
+  }
+
+  get newCtx(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
+  }
+}
+
+export class AfterAgreementUpdatedCall extends ethereum.Call {
+  get inputs(): AfterAgreementUpdatedCall__Inputs {
+    return new AfterAgreementUpdatedCall__Inputs(this);
+  }
+
+  get outputs(): AfterAgreementUpdatedCall__Outputs {
+    return new AfterAgreementUpdatedCall__Outputs(this);
+  }
+}
+
+export class AfterAgreementUpdatedCall__Inputs {
+  _call: AfterAgreementUpdatedCall;
+
+  constructor(call: AfterAgreementUpdatedCall) {
+    this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get value1(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get value2(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+
+  get value3(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+
+  get value4(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+
+  get value5(): Bytes {
+    return this._call.inputValues[5].value.toBytes();
+  }
+}
+
+export class AfterAgreementUpdatedCall__Outputs {
+  _call: AfterAgreementUpdatedCall;
+
+  constructor(call: AfterAgreementUpdatedCall) {
+    this._call = call;
+  }
+
+  get value0(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
   }
 }
 
@@ -950,6 +1458,32 @@ export class BurnBatchCall__Outputs {
   _call: BurnBatchCall;
 
   constructor(call: BurnBatchCall) {
+    this._call = call;
+  }
+}
+
+export class EndPurchaseCall extends ethereum.Call {
+  get inputs(): EndPurchaseCall__Inputs {
+    return new EndPurchaseCall__Inputs(this);
+  }
+
+  get outputs(): EndPurchaseCall__Outputs {
+    return new EndPurchaseCall__Outputs(this);
+  }
+}
+
+export class EndPurchaseCall__Inputs {
+  _call: EndPurchaseCall;
+
+  constructor(call: EndPurchaseCall) {
+    this._call = call;
+  }
+}
+
+export class EndPurchaseCall__Outputs {
+  _call: EndPurchaseCall;
+
+  constructor(call: EndPurchaseCall) {
     this._call = call;
   }
 }
@@ -1392,6 +1926,56 @@ export class SetApprovalForAllCall__Outputs {
   }
 }
 
+export class TokensReceivedCall extends ethereum.Call {
+  get inputs(): TokensReceivedCall__Inputs {
+    return new TokensReceivedCall__Inputs(this);
+  }
+
+  get outputs(): TokensReceivedCall__Outputs {
+    return new TokensReceivedCall__Outputs(this);
+  }
+}
+
+export class TokensReceivedCall__Inputs {
+  _call: TokensReceivedCall;
+
+  constructor(call: TokensReceivedCall) {
+    this._call = call;
+  }
+
+  get operator(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get from(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get to(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+
+  get userData(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+
+  get operatorData(): Bytes {
+    return this._call.inputValues[5].value.toBytes();
+  }
+}
+
+export class TokensReceivedCall__Outputs {
+  _call: TokensReceivedCall;
+
+  constructor(call: TokensReceivedCall) {
+    this._call = call;
+  }
+}
+
 export class UnpauseCall extends ethereum.Call {
   get inputs(): UnpauseCall__Inputs {
     return new UnpauseCall__Inputs(this);
@@ -1441,22 +2025,6 @@ export class UpdateCall__Inputs {
 
   get description(): string {
     return this._call.inputValues[1].value.toString();
-  }
-
-  get price(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get token(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
-  get endPaymentDate(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
-  }
-
-  get uri(): string {
-    return this._call.inputValues[5].value.toString();
   }
 }
 

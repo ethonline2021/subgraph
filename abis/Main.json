@@ -1,5 +1,36 @@
 [
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "itemFactory",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "sfHost",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "sfCfa",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "sfResolver",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "sfVersion",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -52,6 +83,79 @@
   {
     "inputs": [
       {
+        "internalType": "contract ERC20WithTokenInfo",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "createSuperToken",
+    "outputs": [
+      {
+        "internalType": "contract ISuperToken",
+        "name": "superToken",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endPaymentDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "uri",
+        "type": "string"
+      }
+    ],
+    "name": "deployItem",
+    "outputs": [
+      {
+        "internalType": "contract Item",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "name",
         "type": "string"
@@ -63,7 +167,13 @@
       }
     ],
     "name": "deployUser",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "contract User",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -106,6 +216,44 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "contract ERC20WithTokenInfo",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "getSuperToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ERC20WithTokenInfo",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "isSuperToken",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -123,6 +271,53 @@
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "superTokenRegistry",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "superfluidConfig",
+    "outputs": [
+      {
+        "internalType": "contract ISuperfluid",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IConstantFlowAgreementV1",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IResolver",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
