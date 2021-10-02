@@ -20,3 +20,12 @@ type Item @entity {
   endPaymentDate: BigInt!
   uri: String!
 }
+
+type PurchaseFlow @entity {
+  id: ID!
+  buyer: Bytes!
+  item: Item!
+  status: String!
+  nftId: BigInt
+  flowRate: BigInt!  
+}

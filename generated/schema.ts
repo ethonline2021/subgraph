@@ -216,3 +216,87 @@ export class Item extends Entity {
     this.set("uri", Value.fromString(value));
   }
 }
+
+export class PurchaseFlow extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save PurchaseFlow entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save PurchaseFlow entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("PurchaseFlow", id.toString(), this);
+  }
+
+  static load(id: string): PurchaseFlow | null {
+    return store.get("PurchaseFlow", id) as PurchaseFlow | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get buyer(): Bytes {
+    let value = this.get("buyer");
+    return value.toBytes();
+  }
+
+  set buyer(value: Bytes) {
+    this.set("buyer", Value.fromBytes(value));
+  }
+
+  get item(): string {
+    let value = this.get("item");
+    return value.toString();
+  }
+
+  set item(value: string) {
+    this.set("item", Value.fromString(value));
+  }
+
+  get status(): string {
+    let value = this.get("status");
+    return value.toString();
+  }
+
+  set status(value: string) {
+    this.set("status", Value.fromString(value));
+  }
+
+  get nftId(): BigInt | null {
+    let value = this.get("nftId");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set nftId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("nftId");
+    } else {
+      this.set("nftId", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get flowRate(): BigInt {
+    let value = this.get("flowRate");
+    return value.toBigInt();
+  }
+
+  set flowRate(value: BigInt) {
+    this.set("flowRate", Value.fromBigInt(value));
+  }
+}

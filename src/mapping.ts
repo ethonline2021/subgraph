@@ -1,9 +1,9 @@
 import { DataSourceContext } from "@graphprotocol/graph-ts"
 import { UserDeployed } from "../generated/Main/Main"
-import { User, Item } from "../generated/schema"
+import { User, Item, PurchaseFlow } from "../generated/schema"
 import { User as UserTemplate, Item as ItemTemplate } from "../generated/templates"
 import { ItemDeployed, UserUpdated } from "../generated/templates/User/User"
-import { ItemUpdated } from "../generated/templates/Item/Item"
+import { FinishedPurchasing, ItemUpdated, StartedPurchasing } from "../generated/templates/Item/Item"
 
 export function handleUserDeployed(event: UserDeployed): void {
   let entity = User.load(event.params.contractAddress.toHex());
@@ -57,13 +57,41 @@ export function handleItemDeployed(event: ItemDeployed): void {
 }
 
 export function handleItemUpdated(event: ItemUpdated): void {
-  let entity = Item.load(event.params.item.toHex());
+  let entity = Item.load(event.address.toHex());
   if (entity == null) {
-    entity = new Item(event.params.item.toHex());
+    entity = new Item(event.address.toHex());
   }
 
-  entity.address = event.params.item;
+  entity.address = event.address;
   entity.title = event.params.title;
   entity.description = event.params.description;
+  entity.save();
+}
+
+export function handleStartedPurchasing(event: StartedPurchasing): void {
+  let itemId = Item.load(event.address.toHex()).id;
+  let generatedId = itemId.toString() + event.params.buyer.toString();
+  let entity = PurchaseFlow.load(generatedId);
+  if (entity == null) {
+    entity = new PurchaseFlow(generatedId);
+  }
+
+  entity.buyer = event.params.buyer;
+  entity.item = itemId;
+  entity.status = "Started";
+  entity.flowRate = event.params.flowRate;
+  entity.save();
+}
+
+export function handleFinishedPurchasing(event: FinishedPurchasing): void {
+  let itemId = Item.load(event.address.toHex()).id;
+  let generatedId = itemId.toString() + event.params.buyer.toString();
+  let entity = PurchaseFlow.load(generatedId);
+  if (entity == null) {
+    entity = new PurchaseFlow(generatedId);
+  }
+
+  entity.status = "Finished";
+  entity.nftId = event.params.nftId;
   entity.save();
 }

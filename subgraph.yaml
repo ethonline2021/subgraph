@@ -59,6 +59,10 @@ templates:
         - name: Item
           file: ./abis/Item.json
       eventHandlers:
-        - event: ItemUpdated(address,address,string,string)
+        - event: ItemUpdated(address,string,string)
           handler: handleItemUpdated
+        - event: StartedPurchasing(address,int96)
+          handler: handleStartedPurchasing
+        - event: FinishedPurchasing(address,uint256)
+          handler: handleFinishedPurchasing
       file: ./src/mapping.ts

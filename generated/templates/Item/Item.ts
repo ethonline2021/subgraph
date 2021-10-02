@@ -74,29 +74,25 @@ export class DoneStuff__Params {
   }
 }
 
-export class ItemBought extends ethereum.Event {
-  get params(): ItemBought__Params {
-    return new ItemBought__Params(this);
+export class FinishedPurchasing extends ethereum.Event {
+  get params(): FinishedPurchasing__Params {
+    return new FinishedPurchasing__Params(this);
   }
 }
 
-export class ItemBought__Params {
-  _event: ItemBought;
+export class FinishedPurchasing__Params {
+  _event: FinishedPurchasing;
 
-  constructor(event: ItemBought) {
+  constructor(event: FinishedPurchasing) {
     this._event = event;
   }
 
-  get item(): Address {
+  get buyer(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get buyer(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get amount(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get nftId(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -163,20 +159,16 @@ export class ItemUpdated__Params {
     this._event = event;
   }
 
-  get item(): Address {
+  get owner(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get owner(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get title(): string {
-    return this._event.parameters[2].value.toString();
+    return this._event.parameters[1].value.toString();
   }
 
   get description(): string {
-    return this._event.parameters[3].value.toString();
+    return this._event.parameters[2].value.toString();
   }
 }
 
@@ -273,6 +265,28 @@ export class RoleRevoked__Params {
 
   get sender(): Address {
     return this._event.parameters[2].value.toAddress();
+  }
+}
+
+export class StartedPurchasing extends ethereum.Event {
+  get params(): StartedPurchasing__Params {
+    return new StartedPurchasing__Params(this);
+  }
+}
+
+export class StartedPurchasing__Params {
+  _event: StartedPurchasing;
+
+  constructor(event: StartedPurchasing) {
+    this._event = event;
+  }
+
+  get buyer(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get flowRate(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -1142,6 +1156,25 @@ export class Item extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  totalPaid(user: Address): BigInt {
+    let result = super.call("totalPaid", "totalPaid(address):(uint256)", [
+      ethereum.Value.fromAddress(user)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_totalPaid(user: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("totalPaid", "totalPaid(address):(uint256)", [
+      ethereum.Value.fromAddress(user)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   uri(param0: BigInt): string {
     let result = super.call("uri", "uri(uint256):(string)", [
       ethereum.Value.fromUnsignedBigInt(param0)
@@ -1462,28 +1495,28 @@ export class BurnBatchCall__Outputs {
   }
 }
 
-export class EndPurchaseCall extends ethereum.Call {
-  get inputs(): EndPurchaseCall__Inputs {
-    return new EndPurchaseCall__Inputs(this);
+export class ClaimCall extends ethereum.Call {
+  get inputs(): ClaimCall__Inputs {
+    return new ClaimCall__Inputs(this);
   }
 
-  get outputs(): EndPurchaseCall__Outputs {
-    return new EndPurchaseCall__Outputs(this);
+  get outputs(): ClaimCall__Outputs {
+    return new ClaimCall__Outputs(this);
   }
 }
 
-export class EndPurchaseCall__Inputs {
-  _call: EndPurchaseCall;
+export class ClaimCall__Inputs {
+  _call: ClaimCall;
 
-  constructor(call: EndPurchaseCall) {
+  constructor(call: ClaimCall) {
     this._call = call;
   }
 }
 
-export class EndPurchaseCall__Outputs {
-  _call: EndPurchaseCall;
+export class ClaimCall__Outputs {
+  _call: ClaimCall;
 
-  constructor(call: EndPurchaseCall) {
+  constructor(call: ClaimCall) {
     this._call = call;
   }
 }
