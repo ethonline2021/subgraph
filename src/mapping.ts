@@ -77,6 +77,8 @@ export function handleStartedPurchasing(event: StartedPurchasing): void {
   }
 
   entity.buyer = event.params.buyer;
+  entity.agreementId = event.params.agreementId;
+  entity.endPaymentDate = event.params.endPaymentDate;
   entity.item = itemId;
   entity.status = "Started";
   entity.flowRate = event.params.flowRate;

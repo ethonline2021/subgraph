@@ -256,6 +256,24 @@ export class PurchaseFlow extends Entity {
     this.set("buyer", Value.fromBytes(value));
   }
 
+  get agreementId(): Bytes {
+    let value = this.get("agreementId");
+    return value.toBytes();
+  }
+
+  set agreementId(value: Bytes) {
+    this.set("agreementId", Value.fromBytes(value));
+  }
+
+  get endPaymentDate(): BigInt {
+    let value = this.get("endPaymentDate");
+    return value.toBigInt();
+  }
+
+  set endPaymentDate(value: BigInt) {
+    this.set("endPaymentDate", Value.fromBigInt(value));
+  }
+
   get item(): string {
     let value = this.get("item");
     return value.toString();

@@ -24,6 +24,8 @@ type Item @entity {
 type PurchaseFlow @entity {
   id: ID!
   buyer: Bytes!
+  agreementId: Bytes!
+  endPaymentDate: BigInt!
   item: Item!
   status: String!
   nftId: BigInt

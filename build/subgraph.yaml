@@ -6,9 +6,9 @@ dataSources:
     name: Main
     network: mumbai
     source:
-      address: "0xA3BCa0a60cf6cBc6a23319CbBf521775f17C452d"
+      address: "0x95eA5271426e20C1501AC534632115846E1AD733"
       abi: Main
-      startBlock: 19621823
+      startBlock: 19753377
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -61,7 +61,7 @@ templates:
       eventHandlers:
         - event: ItemUpdated(address,string,string)
           handler: handleItemUpdated
-        - event: StartedPurchasing(address,int96)
+        - event: StartedPurchasing(address,bytes32,int96,uint256)
           handler: handleStartedPurchasing
         - event: FinishedPurchasing(address,uint256)
           handler: handleFinishedPurchasing
