@@ -58,6 +58,10 @@ export class ItemDeployed__Params {
   get uri(): string {
     return this._event.parameters[8].value.toString();
   }
+
+  get minFlowrate(): BigInt {
+    return this._event.parameters[9].value.toBigInt();
+  }
 }
 
 export class UserCreated extends ethereum.Event {

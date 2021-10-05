@@ -19,6 +19,7 @@ type Item @entity {
   amount: BigInt!
   endPaymentDate: BigInt!
   uri: String!
+  minFlowrate: BigInt!  
 }
 
 type PurchaseFlow @entity {

@@ -172,102 +172,6 @@ export class ItemUpdated__Params {
   }
 }
 
-export class Paused extends ethereum.Event {
-  get params(): Paused__Params {
-    return new Paused__Params(this);
-  }
-}
-
-export class Paused__Params {
-  _event: Paused;
-
-  constructor(event: Paused) {
-    this._event = event;
-  }
-
-  get account(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
-export class RoleAdminChanged extends ethereum.Event {
-  get params(): RoleAdminChanged__Params {
-    return new RoleAdminChanged__Params(this);
-  }
-}
-
-export class RoleAdminChanged__Params {
-  _event: RoleAdminChanged;
-
-  constructor(event: RoleAdminChanged) {
-    this._event = event;
-  }
-
-  get role(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get previousAdminRole(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-
-  get newAdminRole(): Bytes {
-    return this._event.parameters[2].value.toBytes();
-  }
-}
-
-export class RoleGranted extends ethereum.Event {
-  get params(): RoleGranted__Params {
-    return new RoleGranted__Params(this);
-  }
-}
-
-export class RoleGranted__Params {
-  _event: RoleGranted;
-
-  constructor(event: RoleGranted) {
-    this._event = event;
-  }
-
-  get role(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get account(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get sender(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
-export class RoleRevoked extends ethereum.Event {
-  get params(): RoleRevoked__Params {
-    return new RoleRevoked__Params(this);
-  }
-}
-
-export class RoleRevoked__Params {
-  _event: RoleRevoked;
-
-  constructor(event: RoleRevoked) {
-    this._event = event;
-  }
-
-  get role(): Bytes {
-    return this._event.parameters[0].value.toBytes();
-  }
-
-  get account(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get sender(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
 export class StartedPurchasing extends ethereum.Event {
   get params(): StartedPurchasing__Params {
     return new StartedPurchasing__Params(this);
@@ -388,21 +292,42 @@ export class URI__Params {
   }
 }
 
-export class Unpaused extends ethereum.Event {
-  get params(): Unpaused__Params {
-    return new Unpaused__Params(this);
+export class WithdrawnEth extends ethereum.Event {
+  get params(): WithdrawnEth__Params {
+    return new WithdrawnEth__Params(this);
   }
 }
 
-export class Unpaused__Params {
-  _event: Unpaused;
+export class WithdrawnEth__Params {
+  _event: WithdrawnEth;
 
-  constructor(event: Unpaused) {
+  constructor(event: WithdrawnEth) {
     this._event = event;
   }
 
-  get account(): Address {
+  get recipient(): Address {
     return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class Item__checkUpkeepResult {
+  value0: boolean;
+  value1: Bytes;
+
+  constructor(value0: boolean, value1: Bytes) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromBoolean(this.value0));
+    map.set("value1", ethereum.Value.fromBytes(this.value1));
+    return map;
   }
 }
 
@@ -415,6 +340,7 @@ export class Item__getDetailsResult {
   value5: BigInt;
   value6: BigInt;
   value7: string;
+  value8: BigInt;
 
   constructor(
     value0: Address,
@@ -424,7 +350,8 @@ export class Item__getDetailsResult {
     value4: Address,
     value5: BigInt,
     value6: BigInt,
-    value7: string
+    value7: string,
+    value8: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -434,6 +361,7 @@ export class Item__getDetailsResult {
     this.value5 = value5;
     this.value6 = value6;
     this.value7 = value7;
+    this.value8 = value8;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -446,6 +374,7 @@ export class Item__getDetailsResult {
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
     map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
     map.set("value7", ethereum.Value.fromString(this.value7));
+    map.set("value8", ethereum.Value.fromSignedBigInt(this.value8));
     return map;
   }
 }
@@ -453,59 +382,6 @@ export class Item__getDetailsResult {
 export class Item extends ethereum.SmartContract {
   static bind(address: Address): Item {
     return new Item("Item", address);
-  }
-
-  DEFAULT_ADMIN_ROLE(): Bytes {
-    let result = super.call(
-      "DEFAULT_ADMIN_ROLE",
-      "DEFAULT_ADMIN_ROLE():(bytes32)",
-      []
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_DEFAULT_ADMIN_ROLE(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "DEFAULT_ADMIN_ROLE",
-      "DEFAULT_ADMIN_ROLE():(bytes32)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  MINTER_ROLE(): Bytes {
-    let result = super.call("MINTER_ROLE", "MINTER_ROLE():(bytes32)", []);
-
-    return result[0].toBytes();
-  }
-
-  try_MINTER_ROLE(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall("MINTER_ROLE", "MINTER_ROLE():(bytes32)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  PAUSER_ROLE(): Bytes {
-    let result = super.call("PAUSER_ROLE", "PAUSER_ROLE():(bytes32)", []);
-
-    return result[0].toBytes();
-  }
-
-  try_PAUSER_ROLE(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall("PAUSER_ROLE", "PAUSER_ROLE():(bytes32)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   afterAgreementCreated(
@@ -659,6 +535,29 @@ export class Item extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  availableAmount(): BigInt {
+    let result = super.call(
+      "availableAmount",
+      "availableAmount():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_availableAmount(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "availableAmount",
+      "availableAmount():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   balanceOf(account: Address, id: BigInt): BigInt {
@@ -863,10 +762,36 @@ export class Item extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
+  checkUpkeep(param0: Bytes): Item__checkUpkeepResult {
+    let result = super.call("checkUpkeep", "checkUpkeep(bytes):(bool,bytes)", [
+      ethereum.Value.fromBytes(param0)
+    ]);
+
+    return new Item__checkUpkeepResult(
+      result[0].toBoolean(),
+      result[1].toBytes()
+    );
+  }
+
+  try_checkUpkeep(param0: Bytes): ethereum.CallResult<Item__checkUpkeepResult> {
+    let result = super.tryCall(
+      "checkUpkeep",
+      "checkUpkeep(bytes):(bool,bytes)",
+      [ethereum.Value.fromBytes(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new Item__checkUpkeepResult(value[0].toBoolean(), value[1].toBytes())
+    );
+  }
+
   getDetails(): Item__getDetailsResult {
     let result = super.call(
       "getDetails",
-      "getDetails():(address,string,string,uint256,address,uint256,uint256,string)",
+      "getDetails():(address,string,string,uint256,address,uint256,uint256,string,int96)",
       []
     );
 
@@ -878,14 +803,15 @@ export class Item extends ethereum.SmartContract {
       result[4].toAddress(),
       result[5].toBigInt(),
       result[6].toBigInt(),
-      result[7].toString()
+      result[7].toString(),
+      result[8].toBigInt()
     );
   }
 
   try_getDetails(): ethereum.CallResult<Item__getDetailsResult> {
     let result = super.tryCall(
       "getDetails",
-      "getDetails():(address,string,string,uint256,address,uint256,uint256,string)",
+      "getDetails():(address,string,string,uint256,address,uint256,uint256,string,int96)",
       []
     );
     if (result.reverted) {
@@ -901,103 +827,10 @@ export class Item extends ethereum.SmartContract {
         value[4].toAddress(),
         value[5].toBigInt(),
         value[6].toBigInt(),
-        value[7].toString()
+        value[7].toString(),
+        value[8].toBigInt()
       )
     );
-  }
-
-  getRoleAdmin(role: Bytes): Bytes {
-    let result = super.call("getRoleAdmin", "getRoleAdmin(bytes32):(bytes32)", [
-      ethereum.Value.fromFixedBytes(role)
-    ]);
-
-    return result[0].toBytes();
-  }
-
-  try_getRoleAdmin(role: Bytes): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "getRoleAdmin",
-      "getRoleAdmin(bytes32):(bytes32)",
-      [ethereum.Value.fromFixedBytes(role)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  getRoleMember(role: Bytes, index: BigInt): Address {
-    let result = super.call(
-      "getRoleMember",
-      "getRoleMember(bytes32,uint256):(address)",
-      [
-        ethereum.Value.fromFixedBytes(role),
-        ethereum.Value.fromUnsignedBigInt(index)
-      ]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_getRoleMember(role: Bytes, index: BigInt): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "getRoleMember",
-      "getRoleMember(bytes32,uint256):(address)",
-      [
-        ethereum.Value.fromFixedBytes(role),
-        ethereum.Value.fromUnsignedBigInt(index)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  getRoleMemberCount(role: Bytes): BigInt {
-    let result = super.call(
-      "getRoleMemberCount",
-      "getRoleMemberCount(bytes32):(uint256)",
-      [ethereum.Value.fromFixedBytes(role)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_getRoleMemberCount(role: Bytes): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getRoleMemberCount",
-      "getRoleMemberCount(bytes32):(uint256)",
-      [ethereum.Value.fromFixedBytes(role)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  hasRole(role: Bytes, account: Address): boolean {
-    let result = super.call("hasRole", "hasRole(bytes32,address):(bool)", [
-      ethereum.Value.fromFixedBytes(role),
-      ethereum.Value.fromAddress(account)
-    ]);
-
-    return result[0].toBoolean();
-  }
-
-  try_hasRole(role: Bytes, account: Address): ethereum.CallResult<boolean> {
-    let result = super.tryCall("hasRole", "hasRole(bytes32,address):(bool)", [
-      ethereum.Value.fromFixedBytes(role),
-      ethereum.Value.fromAddress(account)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   isApprovedForAll(account: Address, operator: Address): boolean {
@@ -1025,21 +858,6 @@ export class Item extends ethereum.SmartContract {
         ethereum.Value.fromAddress(operator)
       ]
     );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  paused(): boolean {
-    let result = super.call("paused", "paused():(bool)", []);
-
-    return result[0].toBoolean();
-  }
-
-  try_paused(): ethereum.CallResult<boolean> {
-    let result = super.tryCall("paused", "paused():(bool)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1333,79 +1151,41 @@ export class AfterAgreementUpdatedCall__Outputs {
   }
 }
 
-export class BurnCall extends ethereum.Call {
-  get inputs(): BurnCall__Inputs {
-    return new BurnCall__Inputs(this);
+export class CheckUpkeepCall extends ethereum.Call {
+  get inputs(): CheckUpkeepCall__Inputs {
+    return new CheckUpkeepCall__Inputs(this);
   }
 
-  get outputs(): BurnCall__Outputs {
-    return new BurnCall__Outputs(this);
+  get outputs(): CheckUpkeepCall__Outputs {
+    return new CheckUpkeepCall__Outputs(this);
   }
 }
 
-export class BurnCall__Inputs {
-  _call: BurnCall;
+export class CheckUpkeepCall__Inputs {
+  _call: CheckUpkeepCall;
 
-  constructor(call: BurnCall) {
+  constructor(call: CheckUpkeepCall) {
     this._call = call;
   }
 
-  get account(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get id(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get value(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+  get value0(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
   }
 }
 
-export class BurnCall__Outputs {
-  _call: BurnCall;
+export class CheckUpkeepCall__Outputs {
+  _call: CheckUpkeepCall;
 
-  constructor(call: BurnCall) {
-    this._call = call;
-  }
-}
-
-export class BurnBatchCall extends ethereum.Call {
-  get inputs(): BurnBatchCall__Inputs {
-    return new BurnBatchCall__Inputs(this);
-  }
-
-  get outputs(): BurnBatchCall__Outputs {
-    return new BurnBatchCall__Outputs(this);
-  }
-}
-
-export class BurnBatchCall__Inputs {
-  _call: BurnBatchCall;
-
-  constructor(call: BurnBatchCall) {
+  constructor(call: CheckUpkeepCall) {
     this._call = call;
   }
 
-  get account(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get upkeepNeeded(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
   }
 
-  get ids(): Array<BigInt> {
-    return this._call.inputValues[1].value.toBigIntArray();
-  }
-
-  get values(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
-}
-
-export class BurnBatchCall__Outputs {
-  _call: BurnBatchCall;
-
-  constructor(call: BurnBatchCall) {
-    this._call = call;
+  get value1(): Bytes {
+    return this._call.outputValues[1].value.toBytes();
   }
 }
 
@@ -1439,214 +1219,32 @@ export class ClaimCall__Outputs {
   }
 }
 
-export class GrantRoleCall extends ethereum.Call {
-  get inputs(): GrantRoleCall__Inputs {
-    return new GrantRoleCall__Inputs(this);
+export class PerformUpkeepCall extends ethereum.Call {
+  get inputs(): PerformUpkeepCall__Inputs {
+    return new PerformUpkeepCall__Inputs(this);
   }
 
-  get outputs(): GrantRoleCall__Outputs {
-    return new GrantRoleCall__Outputs(this);
+  get outputs(): PerformUpkeepCall__Outputs {
+    return new PerformUpkeepCall__Outputs(this);
   }
 }
 
-export class GrantRoleCall__Inputs {
-  _call: GrantRoleCall;
+export class PerformUpkeepCall__Inputs {
+  _call: PerformUpkeepCall;
 
-  constructor(call: GrantRoleCall) {
+  constructor(call: PerformUpkeepCall) {
     this._call = call;
   }
 
-  get role(): Bytes {
+  get value0(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
-
-  get account(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
 }
 
-export class GrantRoleCall__Outputs {
-  _call: GrantRoleCall;
+export class PerformUpkeepCall__Outputs {
+  _call: PerformUpkeepCall;
 
-  constructor(call: GrantRoleCall) {
-    this._call = call;
-  }
-}
-
-export class MintCall extends ethereum.Call {
-  get inputs(): MintCall__Inputs {
-    return new MintCall__Inputs(this);
-  }
-
-  get outputs(): MintCall__Outputs {
-    return new MintCall__Outputs(this);
-  }
-}
-
-export class MintCall__Inputs {
-  _call: MintCall;
-
-  constructor(call: MintCall) {
-    this._call = call;
-  }
-
-  get to(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get id(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get amount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get data(): Bytes {
-    return this._call.inputValues[3].value.toBytes();
-  }
-}
-
-export class MintCall__Outputs {
-  _call: MintCall;
-
-  constructor(call: MintCall) {
-    this._call = call;
-  }
-}
-
-export class MintBatchCall extends ethereum.Call {
-  get inputs(): MintBatchCall__Inputs {
-    return new MintBatchCall__Inputs(this);
-  }
-
-  get outputs(): MintBatchCall__Outputs {
-    return new MintBatchCall__Outputs(this);
-  }
-}
-
-export class MintBatchCall__Inputs {
-  _call: MintBatchCall;
-
-  constructor(call: MintBatchCall) {
-    this._call = call;
-  }
-
-  get to(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get ids(): Array<BigInt> {
-    return this._call.inputValues[1].value.toBigIntArray();
-  }
-
-  get amounts(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
-
-  get data(): Bytes {
-    return this._call.inputValues[3].value.toBytes();
-  }
-}
-
-export class MintBatchCall__Outputs {
-  _call: MintBatchCall;
-
-  constructor(call: MintBatchCall) {
-    this._call = call;
-  }
-}
-
-export class PauseCall extends ethereum.Call {
-  get inputs(): PauseCall__Inputs {
-    return new PauseCall__Inputs(this);
-  }
-
-  get outputs(): PauseCall__Outputs {
-    return new PauseCall__Outputs(this);
-  }
-}
-
-export class PauseCall__Inputs {
-  _call: PauseCall;
-
-  constructor(call: PauseCall) {
-    this._call = call;
-  }
-}
-
-export class PauseCall__Outputs {
-  _call: PauseCall;
-
-  constructor(call: PauseCall) {
-    this._call = call;
-  }
-}
-
-export class RenounceRoleCall extends ethereum.Call {
-  get inputs(): RenounceRoleCall__Inputs {
-    return new RenounceRoleCall__Inputs(this);
-  }
-
-  get outputs(): RenounceRoleCall__Outputs {
-    return new RenounceRoleCall__Outputs(this);
-  }
-}
-
-export class RenounceRoleCall__Inputs {
-  _call: RenounceRoleCall;
-
-  constructor(call: RenounceRoleCall) {
-    this._call = call;
-  }
-
-  get role(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-
-  get account(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-}
-
-export class RenounceRoleCall__Outputs {
-  _call: RenounceRoleCall;
-
-  constructor(call: RenounceRoleCall) {
-    this._call = call;
-  }
-}
-
-export class RevokeRoleCall extends ethereum.Call {
-  get inputs(): RevokeRoleCall__Inputs {
-    return new RevokeRoleCall__Inputs(this);
-  }
-
-  get outputs(): RevokeRoleCall__Outputs {
-    return new RevokeRoleCall__Outputs(this);
-  }
-}
-
-export class RevokeRoleCall__Inputs {
-  _call: RevokeRoleCall;
-
-  constructor(call: RevokeRoleCall) {
-    this._call = call;
-  }
-
-  get role(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-
-  get account(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-}
-
-export class RevokeRoleCall__Outputs {
-  _call: RevokeRoleCall;
-
-  constructor(call: RevokeRoleCall) {
+  constructor(call: PerformUpkeepCall) {
     this._call = call;
   }
 }
@@ -1827,32 +1425,6 @@ export class TokensReceivedCall__Outputs {
   }
 }
 
-export class UnpauseCall extends ethereum.Call {
-  get inputs(): UnpauseCall__Inputs {
-    return new UnpauseCall__Inputs(this);
-  }
-
-  get outputs(): UnpauseCall__Outputs {
-    return new UnpauseCall__Outputs(this);
-  }
-}
-
-export class UnpauseCall__Inputs {
-  _call: UnpauseCall;
-
-  constructor(call: UnpauseCall) {
-    this._call = call;
-  }
-}
-
-export class UnpauseCall__Outputs {
-  _call: UnpauseCall;
-
-  constructor(call: UnpauseCall) {
-    this._call = call;
-  }
-}
-
 export class UpdateCall extends ethereum.Call {
   get inputs(): UpdateCall__Inputs {
     return new UpdateCall__Inputs(this);
@@ -1883,6 +1455,36 @@ export class UpdateCall__Outputs {
   _call: UpdateCall;
 
   constructor(call: UpdateCall) {
+    this._call = call;
+  }
+}
+
+export class WithdrawEthCall extends ethereum.Call {
+  get inputs(): WithdrawEthCall__Inputs {
+    return new WithdrawEthCall__Inputs(this);
+  }
+
+  get outputs(): WithdrawEthCall__Outputs {
+    return new WithdrawEthCall__Outputs(this);
+  }
+}
+
+export class WithdrawEthCall__Inputs {
+  _call: WithdrawEthCall;
+
+  constructor(call: WithdrawEthCall) {
+    this._call = call;
+  }
+
+  get _to(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class WithdrawEthCall__Outputs {
+  _call: WithdrawEthCall;
+
+  constructor(call: WithdrawEthCall) {
     this._call = call;
   }
 }
