@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: schema.graphql
+  file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: Main
@@ -17,11 +17,11 @@ dataSources:
         - User
       abis:
         - name: Main
-          file: Main/abis/Main.json
+          file: ./abis/Main.json
       eventHandlers:
         - event: UserDeployed(address,address,string,string)
           handler: handleUserDeployed
-      file: Main/Main.wasm
+      file: ./src/mapping.ts
 templates:
   - kind: ethereum/contract
     name: User
@@ -37,13 +37,13 @@ templates:
         - Item
       abis:
         - name: User
-          file: User/abis/User.json
+          file: ./abis/User.json
       eventHandlers:
         - event: UserUpdated(address,string,string)
           handler: handleUserUpdated
         - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string,int96)
           handler: handleItemDeployed
-      file: Main/Main.wasm
+      file: ./src/mapping.ts
   - kind: ethereum/contract
     name: Item
     network: kovan
@@ -57,7 +57,7 @@ templates:
         - Item
       abis:
         - name: Item
-          file: Item/abis/Item.json
+          file: ./abis/Item.json
       eventHandlers:
         - event: ItemUpdated(address,string,string)
           handler: handleItemUpdated
@@ -65,4 +65,4 @@ templates:
           handler: handleStartedPurchasing
         - event: FinishedPurchasing(address,uint256)
           handler: handleFinishedPurchasing
-      file: Main/Main.wasm
+      file: ./src/mapping.ts
