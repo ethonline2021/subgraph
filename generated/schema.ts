@@ -215,15 +215,6 @@ export class Item extends Entity {
   set uri(value: string) {
     this.set("uri", Value.fromString(value));
   }
-
-  get minFlowrate(): BigInt {
-    let value = this.get("minFlowrate");
-    return value.toBigInt();
-  }
-
-  set minFlowrate(value: BigInt) {
-    this.set("minFlowrate", Value.fromBigInt(value));
-  }
 }
 
 export class PurchaseFlow extends Entity {

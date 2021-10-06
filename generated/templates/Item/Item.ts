@@ -340,7 +340,6 @@ export class Item__getDetailsResult {
   value5: BigInt;
   value6: BigInt;
   value7: string;
-  value8: BigInt;
 
   constructor(
     value0: Address,
@@ -350,8 +349,7 @@ export class Item__getDetailsResult {
     value4: Address,
     value5: BigInt,
     value6: BigInt,
-    value7: string,
-    value8: BigInt
+    value7: string
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -361,7 +359,6 @@ export class Item__getDetailsResult {
     this.value5 = value5;
     this.value6 = value6;
     this.value7 = value7;
-    this.value8 = value8;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -374,7 +371,6 @@ export class Item__getDetailsResult {
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
     map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
     map.set("value7", ethereum.Value.fromString(this.value7));
-    map.set("value8", ethereum.Value.fromSignedBigInt(this.value8));
     return map;
   }
 }
@@ -791,7 +787,7 @@ export class Item extends ethereum.SmartContract {
   getDetails(): Item__getDetailsResult {
     let result = super.call(
       "getDetails",
-      "getDetails():(address,string,string,uint256,address,uint256,uint256,string,int96)",
+      "getDetails():(address,string,string,uint256,address,uint256,uint256,string)",
       []
     );
 
@@ -803,15 +799,14 @@ export class Item extends ethereum.SmartContract {
       result[4].toAddress(),
       result[5].toBigInt(),
       result[6].toBigInt(),
-      result[7].toString(),
-      result[8].toBigInt()
+      result[7].toString()
     );
   }
 
   try_getDetails(): ethereum.CallResult<Item__getDetailsResult> {
     let result = super.tryCall(
       "getDetails",
-      "getDetails():(address,string,string,uint256,address,uint256,uint256,string,int96)",
+      "getDetails():(address,string,string,uint256,address,uint256,uint256,string)",
       []
     );
     if (result.reverted) {
@@ -827,8 +822,7 @@ export class Item extends ethereum.SmartContract {
         value[4].toAddress(),
         value[5].toBigInt(),
         value[6].toBigInt(),
-        value[7].toString(),
-        value[8].toBigInt()
+        value[7].toString()
       )
     );
   }
@@ -863,6 +857,29 @@ export class Item extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  requiredFlowRate(): BigInt {
+    let result = super.call(
+      "requiredFlowRate",
+      "requiredFlowRate():(int96)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_requiredFlowRate(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "requiredFlowRate",
+      "requiredFlowRate():(int96)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   supportsInterface(interfaceId: Bytes): boolean {

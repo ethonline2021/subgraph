@@ -6,7 +6,7 @@ dataSources:
     name: Main
     network: mumbai
     source:
-      address: "0x71CD0606E498ab4469851244b07EF37CD82F898E"
+      address: "0x46F08EEB89749cB802Bc7130C2063fbFd66B6912"
       abi: Main
       startBlock: 19797837
     mapping:
@@ -41,7 +41,7 @@ templates:
       eventHandlers:
         - event: UserUpdated(address,string,string)
           handler: handleUserUpdated
-        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string,int96)
+        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string)
           handler: handleItemDeployed
       file: ./src/mapping.ts
   - kind: ethereum/contract

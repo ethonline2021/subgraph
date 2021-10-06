@@ -76,12 +76,6 @@
         "internalType": "string",
         "name": "uri",
         "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "int96",
-        "name": "minFlowrate",
-        "type": "int96"
       }
     ],
     "name": "ItemDeployed",

@@ -10,6 +10,32 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class MetaTransactionExecuted extends ethereum.Event {
+  get params(): MetaTransactionExecuted__Params {
+    return new MetaTransactionExecuted__Params(this);
+  }
+}
+
+export class MetaTransactionExecuted__Params {
+  _event: MetaTransactionExecuted;
+
+  constructor(event: MetaTransactionExecuted) {
+    this._event = event;
+  }
+
+  get userAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get relayerAddress(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get functionSignature(): Bytes {
+    return this._event.parameters[2].value.toBytes();
+  }
+}
+
 export class OwnershipTransferred extends ethereum.Event {
   get params(): OwnershipTransferred__Params {
     return new OwnershipTransferred__Params(this);
@@ -247,6 +273,25 @@ export class Main extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  getNonce(user: Address): BigInt {
+    let result = super.call("getNonce", "getNonce(address):(uint256)", [
+      ethereum.Value.fromAddress(user)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_getNonce(user: Address): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("getNonce", "getNonce(address):(uint256)", [
+      ethereum.Value.fromAddress(user)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   getSuperToken(_token: Address): Address {
@@ -542,6 +587,56 @@ export class DeployUserCall__Outputs {
 
   get value0(): Address {
     return this._call.outputValues[0].value.toAddress();
+  }
+}
+
+export class ExecuteMetaTransactionCall extends ethereum.Call {
+  get inputs(): ExecuteMetaTransactionCall__Inputs {
+    return new ExecuteMetaTransactionCall__Inputs(this);
+  }
+
+  get outputs(): ExecuteMetaTransactionCall__Outputs {
+    return new ExecuteMetaTransactionCall__Outputs(this);
+  }
+}
+
+export class ExecuteMetaTransactionCall__Inputs {
+  _call: ExecuteMetaTransactionCall;
+
+  constructor(call: ExecuteMetaTransactionCall) {
+    this._call = call;
+  }
+
+  get userAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get functionSignature(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get sigR(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+
+  get sigS(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
+
+  get sigV(): i32 {
+    return this._call.inputValues[4].value.toI32();
+  }
+}
+
+export class ExecuteMetaTransactionCall__Outputs {
+  _call: ExecuteMetaTransactionCall;
+
+  constructor(call: ExecuteMetaTransactionCall) {
+    this._call = call;
+  }
+
+  get value0(): Bytes {
+    return this._call.outputValues[0].value.toBytes();
   }
 }
 

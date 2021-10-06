@@ -49,7 +49,6 @@ export function handleItemDeployed(event: ItemDeployed): void {
   entity.amount = event.params.amount;
   entity.endPaymentDate = event.params.endPaymentDate;
   entity.uri = event.params.uri;
-  entity.minFlowrate = event.params.minFlowrate;
   entity.save();
 
   let context = new DataSourceContext();

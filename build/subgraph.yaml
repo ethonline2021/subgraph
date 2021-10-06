@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Main
-    network: kovan
+    network: mumbai
     source:
-      address: "0xe34306a96665dF9117fEab8b4547cB8f9FC99f00"
+      address: "0x46F08EEB89749cB802Bc7130C2063fbFd66B6912"
       abi: Main
-      startBlock: 27514926
+      startBlock: 19797837
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -25,7 +25,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: User
-    network: kovan
+    network: mumbai
     source:
       abi: User
     mapping:
@@ -41,12 +41,12 @@ templates:
       eventHandlers:
         - event: UserUpdated(address,string,string)
           handler: handleUserUpdated
-        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string,int96)
+        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string)
           handler: handleItemDeployed
       file: Main/Main.wasm
   - kind: ethereum/contract
     name: Item
-    network: kovan
+    network: mumbai
     source:
       abi: Item
     mapping:
