@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Main
-    network: kovan
+    network: mumbai
     source:
-      address: "0xEEe9e22957C763Bc7A48A9022E025B69d16F9589"
+      address: "0xeA5B1b9ddB201D49ED702da262fdD6AB2c03FCe4"
       abi: Main
-      startBlock: 27559091
+      startBlock: 19895299
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -21,11 +21,13 @@ dataSources:
       eventHandlers:
         - event: UserDeployed(address,address,string,string)
           handler: handleUserDeployed
+        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string)
+          handler: handleItemDeployed
       file: ./src/mapping.ts
 templates:
   - kind: ethereum/contract
     name: User
-    network: kovan
+    network: mumbai
     source:
       abi: User
     mapping:
@@ -41,12 +43,10 @@ templates:
       eventHandlers:
         - event: UserUpdated(address,string,string)
           handler: handleUserUpdated
-        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string)
-          handler: handleItemDeployed
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: Item
-    network: kovan
+    network: mumbai
     source:
       abi: Item
     mapping:

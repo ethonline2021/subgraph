@@ -10,6 +10,56 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class ItemDeployed extends ethereum.Event {
+  get params(): ItemDeployed__Params {
+    return new ItemDeployed__Params(this);
+  }
+}
+
+export class ItemDeployed__Params {
+  _event: ItemDeployed;
+
+  constructor(event: ItemDeployed) {
+    this._event = event;
+  }
+
+  get itemAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get owner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get title(): string {
+    return this._event.parameters[2].value.toString();
+  }
+
+  get description(): string {
+    return this._event.parameters[3].value.toString();
+  }
+
+  get price(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get token(): Address {
+    return this._event.parameters[5].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+
+  get endPaymentDate(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
+  }
+
+  get uri(): string {
+    return this._event.parameters[8].value.toString();
+  }
+}
+
 export class MetaTransactionExecuted extends ethereum.Event {
   get params(): MetaTransactionExecuted__Params {
     return new MetaTransactionExecuted__Params(this);
@@ -136,65 +186,6 @@ export class Main extends ethereum.SmartContract {
       "createSuperToken",
       "createSuperToken(address):(address)",
       [ethereum.Value.fromAddress(_token)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  deployItem(
-    owner: Address,
-    title: string,
-    description: string,
-    price: BigInt,
-    token: Address,
-    amount: BigInt,
-    endPaymentDate: BigInt,
-    uri: string
-  ): Address {
-    let result = super.call(
-      "deployItem",
-      "deployItem(address,string,string,uint256,address,uint256,uint256,string):(address)",
-      [
-        ethereum.Value.fromAddress(owner),
-        ethereum.Value.fromString(title),
-        ethereum.Value.fromString(description),
-        ethereum.Value.fromUnsignedBigInt(price),
-        ethereum.Value.fromAddress(token),
-        ethereum.Value.fromUnsignedBigInt(amount),
-        ethereum.Value.fromUnsignedBigInt(endPaymentDate),
-        ethereum.Value.fromString(uri)
-      ]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_deployItem(
-    owner: Address,
-    title: string,
-    description: string,
-    price: BigInt,
-    token: Address,
-    amount: BigInt,
-    endPaymentDate: BigInt,
-    uri: string
-  ): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "deployItem",
-      "deployItem(address,string,string,uint256,address,uint256,uint256,string):(address)",
-      [
-        ethereum.Value.fromAddress(owner),
-        ethereum.Value.fromString(title),
-        ethereum.Value.fromString(description),
-        ethereum.Value.fromUnsignedBigInt(price),
-        ethereum.Value.fromAddress(token),
-        ethereum.Value.fromUnsignedBigInt(amount),
-        ethereum.Value.fromUnsignedBigInt(endPaymentDate),
-        ethereum.Value.fromString(uri)
-      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -507,36 +498,32 @@ export class DeployItemCall__Inputs {
     this._call = call;
   }
 
-  get owner(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
   get title(): string {
-    return this._call.inputValues[1].value.toString();
+    return this._call.inputValues[0].value.toString();
   }
 
   get description(): string {
-    return this._call.inputValues[2].value.toString();
+    return this._call.inputValues[1].value.toString();
   }
 
   get price(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get token(): Address {
-    return this._call.inputValues[4].value.toAddress();
+    return this._call.inputValues[3].value.toAddress();
   }
 
   get amount(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 
   get endPaymentDate(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
+    return this._call.inputValues[5].value.toBigInt();
   }
 
   get uri(): string {
-    return this._call.inputValues[7].value.toString();
+    return this._call.inputValues[6].value.toString();
   }
 }
 
@@ -545,10 +532,6 @@ export class DeployItemCall__Outputs {
 
   constructor(call: DeployItemCall) {
     this._call = call;
-  }
-
-  get value0(): Address {
-    return this._call.outputValues[0].value.toAddress();
   }
 }
 

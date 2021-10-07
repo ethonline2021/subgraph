@@ -1,8 +1,8 @@
 import { DataSourceContext } from "@graphprotocol/graph-ts"
-import { UserDeployed } from "../generated/Main/Main"
+import { ItemDeployed, UserDeployed } from "../generated/Main/Main"
 import { User, Item, PurchaseFlow } from "../generated/schema"
 import { User as UserTemplate, Item as ItemTemplate } from "../generated/templates"
-import { ItemDeployed, UserUpdated } from "../generated/templates/User/User"
+import { UserUpdated } from "../generated/templates/User/User"
 import { FinishedPurchasing, ItemUpdated, StartedPurchasing } from "../generated/templates/Item/Item"
 
 export function handleUserDeployed(event: UserDeployed): void {

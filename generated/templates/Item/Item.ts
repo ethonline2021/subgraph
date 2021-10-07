@@ -292,6 +292,32 @@ export class URI__Params {
   }
 }
 
+export class WithdrawnErc20 extends ethereum.Event {
+  get params(): WithdrawnErc20__Params {
+    return new WithdrawnErc20__Params(this);
+  }
+}
+
+export class WithdrawnErc20__Params {
+  _event: WithdrawnErc20;
+
+  constructor(event: WithdrawnErc20) {
+    this._event = event;
+  }
+
+  get recipient(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get token(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
 export class WithdrawnEth extends ethereum.Event {
   get params(): WithdrawnEth__Params {
     return new WithdrawnEth__Params(this);
@@ -1472,6 +1498,40 @@ export class UpdateCall__Outputs {
   _call: UpdateCall;
 
   constructor(call: UpdateCall) {
+    this._call = call;
+  }
+}
+
+export class WithdrawErc20Call extends ethereum.Call {
+  get inputs(): WithdrawErc20Call__Inputs {
+    return new WithdrawErc20Call__Inputs(this);
+  }
+
+  get outputs(): WithdrawErc20Call__Outputs {
+    return new WithdrawErc20Call__Outputs(this);
+  }
+}
+
+export class WithdrawErc20Call__Inputs {
+  _call: WithdrawErc20Call;
+
+  constructor(call: WithdrawErc20Call) {
+    this._call = call;
+  }
+
+  get _to(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get erc20Token(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class WithdrawErc20Call__Outputs {
+  _call: WithdrawErc20Call;
+
+  constructor(call: WithdrawErc20Call) {
     this._call = call;
   }
 }
