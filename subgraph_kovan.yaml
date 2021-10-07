@@ -6,9 +6,9 @@ dataSources:
     name: Main
     network: kovan
     source:
-      address: "0xe34306a96665dF9117fEab8b4547cB8f9FC99f00"
+      address: "0xEEe9e22957C763Bc7A48A9022E025B69d16F9589"
       abi: Main
-      startBlock: 27514926
+      startBlock: 27559091
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -41,7 +41,7 @@ templates:
       eventHandlers:
         - event: UserUpdated(address,string,string)
           handler: handleUserUpdated
-        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string,int96)
+        - event: ItemDeployed(address,address,string,string,uint256,address,uint256,uint256,string)
           handler: handleItemDeployed
       file: ./src/mapping.ts
   - kind: ethereum/contract
