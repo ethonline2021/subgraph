@@ -27,36 +27,40 @@ export class ItemDeployed__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get owner(): Address {
+  get user(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get title(): string {
-    return this._event.parameters[2].value.toString();
+  get owner(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 
-  get description(): string {
+  get title(): string {
     return this._event.parameters[3].value.toString();
   }
 
+  get description(): string {
+    return this._event.parameters[4].value.toString();
+  }
+
   get price(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
   }
 
   get token(): Address {
-    return this._event.parameters[5].value.toAddress();
+    return this._event.parameters[6].value.toAddress();
   }
 
   get amount(): BigInt {
-    return this._event.parameters[6].value.toBigInt();
-  }
-
-  get endPaymentDate(): BigInt {
     return this._event.parameters[7].value.toBigInt();
   }
 
+  get endPaymentDate(): BigInt {
+    return this._event.parameters[8].value.toBigInt();
+  }
+
   get uri(): string {
-    return this._event.parameters[8].value.toString();
+    return this._event.parameters[9].value.toString();
   }
 }
 

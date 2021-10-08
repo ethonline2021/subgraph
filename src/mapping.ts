@@ -39,7 +39,7 @@ export function handleItemDeployed(event: ItemDeployed): void {
     entity = new Item(event.params.itemAddress.toHex());
   }
 
-  entity.user = User.load(event.address.toHex()).id;
+  entity.user = User.load(event.params.user.toHex()).id;
   entity.address = event.params.itemAddress;
   entity.owner = event.params.owner;
   entity.title = event.params.title;
