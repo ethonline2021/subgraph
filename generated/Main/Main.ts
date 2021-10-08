@@ -422,24 +422,20 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get itemFactory(): Address {
+  get sfHost(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get sfHost(): Address {
+  get sfCfa(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get sfCfa(): Address {
+  get sfResolver(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get sfResolver(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
   get sfVersion(): string {
-    return this._call.inputValues[4].value.toString();
+    return this._call.inputValues[3].value.toString();
   }
 }
 
@@ -649,6 +645,36 @@ export class RenounceOwnershipCall__Outputs {
   _call: RenounceOwnershipCall;
 
   constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetItemFactoryCall extends ethereum.Call {
+  get inputs(): SetItemFactoryCall__Inputs {
+    return new SetItemFactoryCall__Inputs(this);
+  }
+
+  get outputs(): SetItemFactoryCall__Outputs {
+    return new SetItemFactoryCall__Outputs(this);
+  }
+}
+
+export class SetItemFactoryCall__Inputs {
+  _call: SetItemFactoryCall;
+
+  constructor(call: SetItemFactoryCall) {
+    this._call = call;
+  }
+
+  get itemFactory(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetItemFactoryCall__Outputs {
+  _call: SetItemFactoryCall;
+
+  constructor(call: SetItemFactoryCall) {
     this._call = call;
   }
 }

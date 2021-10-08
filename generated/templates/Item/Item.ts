@@ -340,23 +340,6 @@ export class WithdrawnEth__Params {
   }
 }
 
-export class Item__checkUpkeepResult {
-  value0: boolean;
-  value1: Bytes;
-
-  constructor(value0: boolean, value1: Bytes) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromBoolean(this.value0));
-    map.set("value1", ethereum.Value.fromBytes(this.value1));
-    return map;
-  }
-}
-
 export class Item__getDetailsResult {
   value0: Address;
   value1: string;
@@ -784,32 +767,6 @@ export class Item extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
-  checkUpkeep(param0: Bytes): Item__checkUpkeepResult {
-    let result = super.call("checkUpkeep", "checkUpkeep(bytes):(bool,bytes)", [
-      ethereum.Value.fromBytes(param0)
-    ]);
-
-    return new Item__checkUpkeepResult(
-      result[0].toBoolean(),
-      result[1].toBytes()
-    );
-  }
-
-  try_checkUpkeep(param0: Bytes): ethereum.CallResult<Item__checkUpkeepResult> {
-    let result = super.tryCall(
-      "checkUpkeep",
-      "checkUpkeep(bytes):(bool,bytes)",
-      [ethereum.Value.fromBytes(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new Item__checkUpkeepResult(value[0].toBoolean(), value[1].toBytes())
-    );
-  }
-
   getDetails(): Item__getDetailsResult {
     let result = super.call(
       "getDetails",
@@ -878,6 +835,21 @@ export class Item extends ethereum.SmartContract {
         ethereum.Value.fromAddress(operator)
       ]
     );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  isClaimable(): boolean {
+    let result = super.call("isClaimable", "isClaimable():(bool)", []);
+
+    return result[0].toBoolean();
+  }
+
+  try_isClaimable(): ethereum.CallResult<boolean> {
+    let result = super.tryCall("isClaimable", "isClaimable():(bool)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1194,44 +1166,6 @@ export class AfterAgreementUpdatedCall__Outputs {
   }
 }
 
-export class CheckUpkeepCall extends ethereum.Call {
-  get inputs(): CheckUpkeepCall__Inputs {
-    return new CheckUpkeepCall__Inputs(this);
-  }
-
-  get outputs(): CheckUpkeepCall__Outputs {
-    return new CheckUpkeepCall__Outputs(this);
-  }
-}
-
-export class CheckUpkeepCall__Inputs {
-  _call: CheckUpkeepCall;
-
-  constructor(call: CheckUpkeepCall) {
-    this._call = call;
-  }
-
-  get value0(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-}
-
-export class CheckUpkeepCall__Outputs {
-  _call: CheckUpkeepCall;
-
-  constructor(call: CheckUpkeepCall) {
-    this._call = call;
-  }
-
-  get upkeepNeeded(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
-  }
-
-  get value1(): Bytes {
-    return this._call.outputValues[1].value.toBytes();
-  }
-}
-
 export class ClaimCall extends ethereum.Call {
   get inputs(): ClaimCall__Inputs {
     return new ClaimCall__Inputs(this);
@@ -1262,32 +1196,28 @@ export class ClaimCall__Outputs {
   }
 }
 
-export class PerformUpkeepCall extends ethereum.Call {
-  get inputs(): PerformUpkeepCall__Inputs {
-    return new PerformUpkeepCall__Inputs(this);
+export class ClaimAllCall extends ethereum.Call {
+  get inputs(): ClaimAllCall__Inputs {
+    return new ClaimAllCall__Inputs(this);
   }
 
-  get outputs(): PerformUpkeepCall__Outputs {
-    return new PerformUpkeepCall__Outputs(this);
+  get outputs(): ClaimAllCall__Outputs {
+    return new ClaimAllCall__Outputs(this);
   }
 }
 
-export class PerformUpkeepCall__Inputs {
-  _call: PerformUpkeepCall;
+export class ClaimAllCall__Inputs {
+  _call: ClaimAllCall;
 
-  constructor(call: PerformUpkeepCall) {
+  constructor(call: ClaimAllCall) {
     this._call = call;
   }
-
-  get value0(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
 }
 
-export class PerformUpkeepCall__Outputs {
-  _call: PerformUpkeepCall;
+export class ClaimAllCall__Outputs {
+  _call: ClaimAllCall;
 
-  constructor(call: PerformUpkeepCall) {
+  constructor(call: ClaimAllCall) {
     this._call = call;
   }
 }

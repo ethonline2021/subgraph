@@ -6,9 +6,9 @@ dataSources:
     name: Main
     network: kovan
     source:
-      address: "0xc0352d08CDBE8262956212adFc722c5a545e0861"
+      address: "0x090C23c667956810Bb70d38bBdaf3309Cf3a4BC0"
       abi: Main
-      startBlock: 27574475
+      startBlock: 27576337
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

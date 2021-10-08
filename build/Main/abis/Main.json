@@ -3,11 +3,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "itemFactory",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "sfHost",
         "type": "address"
       },
@@ -408,6 +403,19 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "itemFactory",
+        "type": "address"
+      }
+    ],
+    "name": "setItemFactory",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
