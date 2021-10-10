@@ -6,7 +6,7 @@ dataSources:
     name: Main
     network: kovan
     source:
-      address: "0x61A04FBc38757BC0c75e1Be8edF7cA757C5aD422"
+      address: "0xE9EAe82c2E437d3a65c2956e0C611f943eA56826"
       abi: Main
       startBlock: 27609925
     mapping:
