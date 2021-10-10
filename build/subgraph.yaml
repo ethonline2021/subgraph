@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Main
-    network: mumbai
+    network: kovan
     source:
-      address: "0x213D0201767E79F6896326528Fc9C65Bfef7CbC1"
+      address: "0x1EC422B81f33F5FEb1CADf0F19aCD6988dc1d873"
       abi: Main
-      startBlock: 19981596
+      startBlock: 27615972
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -27,7 +27,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: User
-    network: mumbai
+    network: kovan
     source:
       abi: User
     mapping:
@@ -46,7 +46,7 @@ templates:
       file: Main/Main.wasm
   - kind: ethereum/contract
     name: Item
-    network: mumbai
+    network: kovan
     source:
       abi: Item
     mapping:
